@@ -16,8 +16,8 @@
     require "twilio-php-latest/Services/Twilio.php";
  
     // Step 2: set our AccountSid and AuthToken from www.twilio.com/user/account
-    $AccountSid = $_POST['sid'];
-    $AuthToken = "83539acbdd0452a9c45805d765256f1a";
+    $AccountSid = $_COOKIE['SID'];
+    $AuthToken = $_COOKIE['AuthToken'];
  
     // Step 3: instantiate a new Twilio Rest Client
     $client = new Services_Twilio($AccountSid, $AuthToken);
@@ -25,9 +25,9 @@
     // Step 4: make an array of people we know, to send them a message. 
     // Feel free to change/add your own phone number and name here.
 
-	$fromNumber = $_POST['fromNumber'];
-    $number=$_POST['number'];
-    $message=$_POST['message'];
+	$fromNumber = $_POST['SMSfromNumber'];
+    $number=$_POST['SMStoNumber'];
+    $message=$_POST['SMS'];
 
  	try {
         $sms = $client->account->messages->sendMessage($fromNumber, $number,$message);

@@ -1,24 +1,20 @@
 <!DOCTYPE html>
 <!-- saved from url=(0043)http://getbootstrap.com/examples/jumbotron/ -->
-<?php
-	require "twilio-php-latest/Services/twilio.php";
-    $sid = $_GET['AccountSid'];
-    $AuthToken = "83539acbdd0452a9c45805d765256f1a";
-    $client = new Services_Twilio($sid, $AuthToken);
-	$authorized_app = $client->account->authorized_connect_apps->get("CN3cf0eacdb7fd06b4cc12fe72932d6fea");
-	$sid2 = $authorized_app->account_sid;
-?>
+
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel="shortcut icon" href="http://getbootstrap.com/assets/ico/favicon.ico">
 
     <title>TwilioWeb</title>
 
+    <!-- Bootstrap core CSS -->
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Custom styles for this template -->
     <link href="http://getbootstrap.com/examples/jumbotron/jumbotron.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -26,31 +22,43 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    
+    	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script type="text/javascript">
-		//This is the function called by the link below(sendMessage())
+
+		
+
+    		
+		
+		function authenticate(){
+			var SID = document.getElementById("SID").value;
+			console.log(SID);
+			var AuthToken = document.getElementById("AuthToken").value;
+    		$.ajax({
+				type: "POST",
+				url: "setAuth.php",
+				data: {SID: SID, AuthToken: AuthToken}
+    		});		
+		}
+		
+				
+
+		
+		
 		function sendMessage(){
 			//Get the phone number from the input below
-			var fromNumber = document.getElementById("fromNumber").value;
-			console.log(fromNumber);
-			var number = document.getElementById("number").value;
+			var SMSfromNumber = document.getElementById("SMSfromNumber").value;
+			console.log(SMSfromNumber);
+			var SMStoNumber = document.getElementById("SMStoNumber").value;
 			//Print it to console for debugging purposes
-			console.log(number);
+			console.log(SMStoNumber);
 			//Get the message from below
-			var message = document.getElementById("message").value;
-			var sid = "<?php echo $sid; ?>";
-			var sid2 = "<?php echo $sid2; ?>";
-			//Print to console again
-			console.log(message);
-			console.log(sid);
-			console.log(sid2);
-			//YOU NEED JQUERY FOR THIS. Do the GET call sending basically: AJAXEDPAGE.php?number=19253235749&message=HiAndy. So it's url?data&data
-			//You can change type to POST, but you'd need to change AJAXEDPAGE.php to look for $_POST instead of $_GET.
-			//Post generally(always) works better if you need to use ' and " and , and grammar marks
+			var SMS = document.getElementById("SMS").value;
+			console.log(SMS);
 			$.ajax({
 				type: "POST",
 				url: "sendText.php",
-				data: {sid: sid2, fromNumber: fromNumber, number: number, message: message}
+				data: {SMSfromNumber: SMSfromNumber, SMStoNumber: SMStoNumber, SMS: SMS}
 			})
 				.done(function(html){
 					$( "#results" ).empty();
@@ -63,18 +71,43 @@
 			console.log(fromNumber);
 			var toNumber = document.getElementById("toNumber").value;
 			console.log(toNumber);
-			var sid = $sid;
 			$.ajax({
 				type: "POST",
 				url: "makeCall.php",
-				data: {sid: sid, toNumber: toNumber, fromNumber: fromNumber}
+				data: {toNumber: toNumber, fromNumber: fromNumber}
 			});
 		}	
 	</script>
-</head>
 
-<body>
-	    <!-- Fixed navbar -->
+		<style type="text/css">
+			#wrapper {
+				width: 350px;
+				margin: 0 auto;
+			}
+			.labelClass {
+				display: inline-block;
+				width: 350px;
+				margin-right: 5px;
+				margin-top: 5px;
+			}
+			
+			.left {
+ 				 width: 15%;
+   				 float: left;
+   				 text-align: right;
+			}
+			.right {
+    				width: 40%;
+    				margin-left: 10px;
+    				float:left;
+			}	
+		</style>
+
+    
+  </head>
+
+  <body>
+
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -84,47 +117,104 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="http://getbootstrap.com/examples/theme/#">Bootstrap theme</a>
+          <a class="navbar-brand" href="#">TwilioWeb</a>
         </div>
+        <div class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right" role="form">
+          </form>
+        </div><!--/.navbar-collapse -->
       </div>
     </div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
-    	<div class="container">
-        	<h1>Welcome!</h1>
-        	<p>Thank you for trying out TwilioWeb.</p>
-      	</div>
+      <div class="container">
+        <h1>Welcome!</h1>
+        <p>Thanks for trying out TwilioWeb!</p>
+      </div>
     </div>
 
-    <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
-          <h2>Send a SMS</h2>
-          	<p>Text a friend!</p>
-          	Sender: <input id= "fromNumber" type = "text" placeholder = "Your Number"> <br>
-          	Recipient: <input id="number" type="text" placeholder="Enter Number Here"><br>
-         	Message: <textarea id="message" placeholder ="Enter Message Here"></textarea><br>
-        	<p style="text-align:center">
-        	<a href="#" type="button" class="btn btn-med btn-primary" onclick="sendMessage();">Send Message</a>
-        	<div class="alert alert-success" id="results"></div>
-       		</p>
-        </div>
-        <div class="col-md-4">
-          <h2>Make a Call</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          Caller: <input id="fromNumber" type="text" value="15104882466"><br>
-        Call Recipient: <input id="toNumber" type="text" value="14153076382"><br>
-        <a href="#" type="button" class="btn btn-sm btn-primary" onclick="makeCall();">Call!</a>
-       </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="http://getbootstrap.com/examples/jumbotron/#" role="button">View details »</a></p>
-        </div>
-      </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				<h2><p align="center">Submit credentials!</p></h2>
+				<p align="center">In order to send texts and make calls, we need your account SID and authorization token. These can be found on you Twilio dashboard. This information will not be stored.</p>
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label for="SID" class="col-sm-4 control-label">Account SID: </label>
+						<div class="col-sm-7">
+		  				<input type="text" class="form-control" id="SID" placeholder="SID">
+						</div>
+	  				</div>
+	  				<div class="form-group">
+						<label for="AuthToken" class="col-sm-4 control-label">Auth Token: </label>
+						<div class="col-sm-7">
+		  				<input type="password" class="form-control" id="AuthToken" placeholder="Authentication Token">
+						</div>
+	  				</div>
+	  				<div class="form-group">
+						<div class="col-sm-offset-4 col-sm-10">
+		  				<button type="button" class="btn btn-default" onclick="authenticate();">Authenticate!</button>
+						</div>
+	  				</div>
+				</form>	
 
+			</div>
+			
+        <div class="col-md-4">
+	  		<h2><p align="center">Send a SMS</p></h2>
+          	<p align="center">Text a friend!</p>
+          	<form class="form-horizontal" role="form">
+				<div class="form-group">
+					<label class="col-sm-4 control-label">From: </label>
+					<div class="col-sm-6">
+		  				<input type="text" class="form-control" id="SMSfromNumber" placeholder="Your phone #">
+					</div>
+	  			</div>
+	  			<div class="form-group">
+					<label class="col-sm-4 control-label">To: </label>
+					<div class="col-sm-6">
+		  				<input type="text" class="form-control" id="SMStoNumber" placeholder="Your friend's phone #">
+					</div>
+	  			</div>
+	  			<div class="form-group">
+					<label class="col-sm-4 control-label">Message: </label>
+					<div class="col-sm-6">
+						<textarea class="form-control" rows="4" id ="SMS"></textarea>
+					</div>
+	  			</div>
+	  			<div class="form-group">
+					<div class="col-sm-offset-4 col-sm-10">
+		  				<button type="button" class="btn btn-default" onclick="sendMessage();">Send Message!</button>
+					</div>
+	  			</div>
+			</form>
+       		<div class="alert alert-success" id="results"></div> 
+		</div>
+        <div class="col-md-4">
+          <h2><p align="center">Make a Call</h2></p>
+          <p align="center">Please set a default message to play for the people you call through TwilioWeb on your Twilio dashboard. Text-to-speech will be integrated soon :)</p>
+          				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label for="fromNumber" class="col-sm-4 control-label">From: </label>
+						<div class="col-sm-6">
+		  				<input type="text" class="form-control" id="fromNumber" placeholder="Your phone #">
+						</div>
+	  				</div>
+	  				<div class="form-group">
+						<label for="toNumber" class="col-sm-4 control-label">To: </label>
+						<div class="col-sm-6">
+		  				<input type="text" class="form-control" id="toNumber" placeholder="Your friend's phone #">
+						</div>
+	  				</div>
+	  				<div class="form-group">
+						<div class="col-sm-offset-4 col-sm-10">
+		  				<button type="button" onclick="makeCall();" class="btn btn-default">Call!</button>
+						</div>
+	  				</div>
+				</form>	
+      </div>
+	</div>
       <hr>
 
     </div> <!-- /container -->
@@ -133,8 +223,8 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./FrontPage_files/jquery.min.js"></script>
-    <script src="./FrontPage_files/bootstrap.min.js"></script>
+    <script src="./Home_files/jquery.min.js"></script>
+    <script src="./Home_files/bootstrap.min.js"></script>
   
 
 </body></html>

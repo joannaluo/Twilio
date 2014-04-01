@@ -6,8 +6,8 @@
     $version = "2010-04-01";
  
     // Set our Account SID and AuthToken
-    $sid = $_POST['sid'];
-    $token = '83539acbdd0452a9c45805d765256f1a';
+    $sid = $_COOKIE['SID'];
+    $token = $_COOKIE['AuthToken'];
     $client = new Services_Twilio($sid, $token, $version);
     // A phone number you have previously validated with Twilio
     

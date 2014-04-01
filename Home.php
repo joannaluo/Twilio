@@ -29,7 +29,7 @@
 		
 
     		
-		
+		//set SID and authtoekn as cookies in setAuth.php
 		function authenticate(){
 			var SID = document.getElementById("SID").value;
 			console.log(SID);
@@ -78,31 +78,6 @@
 			});
 		}	
 	</script>
-
-		<style type="text/css">
-			#wrapper {
-				width: 350px;
-				margin: 0 auto;
-			}
-			.labelClass {
-				display: inline-block;
-				width: 350px;
-				margin-right: 5px;
-				margin-top: 5px;
-			}
-			
-			.left {
- 				 width: 15%;
-   				 float: left;
-   				 text-align: right;
-			}
-			.right {
-    				width: 40%;
-    				margin-left: 10px;
-    				float:left;
-			}	
-		</style>
-
     
   </head>
 
@@ -126,7 +101,6 @@
       </div>
     </div>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
         <h1>Welcome!</h1>
